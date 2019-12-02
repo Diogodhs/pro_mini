@@ -1,0 +1,33 @@
+#include <Arduino.h>
+#include <Wire.h>                   // incluir a biblioteca para comunicação I2C
+
+#define SLAVE1 0x01
+
+void request_event();
+void receiveEvent(int howMany);
+
+void setup(){
+    Wire.begin(SLAVE1);
+    Wire.onReceive(receiveEvent);
+    Wire.onRequest(request_event);
+}
+
+void loop(){
+    
+}
+
+void request_event(){
+    Wire.write("Dados");
+}
+
+void receiveEvent(int howMany){                 // Função que é executada automaticamente assim que o slave
+
+                                             // receber dados do master
+    String inString = "";              // limpar inString para impedir concatenar dados atuais com anteriores
+    while(Wire.available() >= 1){    // lê até o final da string enviada pelo primeiro Wire.write() do master
+        char inChar = (char)Wire.read(); // Wire.read() recebe cada byte da string de bytes
+        inString += inChar;             // armazanar, concatenando, cada byte recebido do master
+
+                                                // colocando-os numa variável String
+    }
+}
